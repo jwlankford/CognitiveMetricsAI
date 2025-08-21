@@ -1,6 +1,3 @@
-git clone https://jwlankford@dev.azure.com/jwlankford/CognitiveMetricsAI/_git/CognitiveMetricsAI
-cd CognitiveMetricsAI
-
 # Cognitive Metrics AI
 
 A modern performance measurement and review application for managers. It streamlines the performance review process by providing a centralized platform for tracking employee progress, collecting data, and generating data-driven insights. The application aims to move beyond traditional, static performance reviews to foster a continuous culture of growth and improvement.

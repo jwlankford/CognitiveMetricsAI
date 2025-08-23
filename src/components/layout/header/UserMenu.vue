@@ -5,10 +5,11 @@
       @click.prevent="toggleDropdown"
     >
       <span class="mr-3 overflow-hidden rounded-full h-11 w-11">
-        <img src="/images/user/owner.jpg" alt="User" />
+  <img :src="userPhotoURL" alt="User" />
+
       </span>
 
-      <span class="block mr-1 font-medium text-theme-sm">Jeremy </span>
+      <span class="block mr-1 font-medium text-theme-sm">{{ displayName }} </span>
 
       <ChevronDownIcon :class="{ 'rotate-180': dropdownOpen }" />
     </button>
@@ -20,10 +21,10 @@
     >
       <div>
         <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-          Jeremy Lankford
+          {{ displayName }}
         </span>
         <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-          jwlankford@gmail.com
+          {{ email }}
         </span>
       </div>
 
@@ -61,9 +62,13 @@
 import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIcon } from '@/icons'
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
+import { auth } from '@/firebase.js'
+import { onAuthStateChanged } from 'firebase/auth'
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
+const displayName = ref('')
+const email = ref('')
 
 const menuItems = [
   { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
@@ -91,8 +96,29 @@ const handleClickOutside = (event) => {
   }
 }
 
+const userPhotoURL = ref('/images/user/owner.jpg');
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.photoURL) {
+      userPhotoURL.value = user.photoURL;
+    } else {
+      userPhotoURL.value = '/images/user/owner.jpg';
+    }
+  });
+});
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      displayName.value = user.displayName || user.email?.split('@')[0] || ''
+      email.value = user.email || ''
+    } else {
+      displayName.value = ''
+      email.value = ''
+    }
+  })
 })
 
 onUnmounted(() => {

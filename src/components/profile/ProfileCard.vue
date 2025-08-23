@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import Modal from './Modal.vue'
+import { auth } from '@/firebase.js'
+import { onAuthStateChanged, updateProfile } from 'firebase/auth'
+const userPhotoURL = ref('')
+const isProfileInfoModal = ref(false)
+const firstName = ref('')
+const lastName = ref('')
+const email = ref('')
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const displayName = user.displayName || ''
+    firstName.value = displayName.split(' ')[0] || ''
+    lastName.value = displayName.split(' ')[1] || ''
+    email.value = user.email || ''
+    userPhotoURL.value = user.photoURL || ''
+  }
+})
+const saveProfile = async () => {
+  const user = auth.currentUser
+  if (user) {
+    await updateProfile(user, {
+      displayName: `${firstName.value} ${lastName.value}`
+    })
+    // Optionally, update email here if you want to allow email change
+    // await updateEmail(user, email.value)
+  }
+  isProfileInfoModal.value = false
+}
+</script>
 <template>
   <div>
     <div class="p-5 mb-6 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -6,13 +37,13 @@
           <div
             class="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800"
           >
-            <img src="/images/user/owner.jpg" alt="user" />
+            <img :src="userPhotoURL || '/images/user/owner.jpg'" alt="user" />
           </div>
           <div class="order-3 xl:order-2">
             <h4
               class="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left"
             >
-              Jeremy Lankford
+              {{ firstName }} {{ lastName }}
             </h4>
             <div
               class="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left"
@@ -310,16 +341,3 @@
     </Modal>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import Modal from './Modal.vue'
-
-const isProfileInfoModal = ref(false)
-
-const saveProfile = () => {
-  // Implement save profile logic here
-  console.log('Profile saved')
-  isProfileInfoModal.value = false
-}
-</script>

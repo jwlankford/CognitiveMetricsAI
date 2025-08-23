@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <FullScreenLayout>
     <div class="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
@@ -42,9 +43,11 @@
                 </p>
               </div>
               <div>
-                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+                <div class="grid">
                   <button
-                    class="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-12 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
+                    type="button"
+                    @click="handleGoogleSignIn"
+                    class="inline-flex items-center justify-center py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-12 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
                   >
                     <svg
                       width="20"
@@ -72,6 +75,7 @@
                     </svg>
                     Sign in with Google
                   </button>
+                <div v-if="errorMsg" class="text-red-500 text-sm mt-2">{{ errorMsg }}</div>
                 </div>
                 <div class="relative py-3 sm:py-5">
                   <div class="absolute inset-0 flex items-center">
@@ -212,8 +216,10 @@
                       <button
                         type="submit"
                         class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
+                        :disabled="loading"
                       >
-                        Sign In
+                        <span v-if="loading" class="loader mr-2"></span>
+                        <span v-else>Sign In</span>
                       </button>
                     </div>
                   </div>
@@ -241,10 +247,10 @@
             <common-grid-shape />
             <div class="flex flex-col items-center max-w-xs">
               <router-link to="/" class="block mb-4">
-                <img width="{231}" height="{48}" src="/images/logo/auth-logo.svg" alt="Logo" />
+                <img width="{231}" height="{48}" src="/images/logo/logo.png" alt="Logo" />
               </router-link>
               <p class="text-center text-gray-400 dark:text-white/60">
-                Free and Open-Source Tailwind CSS Admin Dashboard Template
+                Best Performance and Highly Optimized Admin Dashboard
               </p>
             </div>
           </div>
@@ -256,23 +262,73 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import CommonGridShape from '@/components/common/CommonGridShape.vue'
 import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
+import { auth } from '@/firebase.js'
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const keepLoggedIn = ref(false)
+const router = useRouter()
+const errorMsg = ref('')
+const loading = ref(false)
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleSubmit = () => {
-  // Handle form submission
-  console.log('Form submitted', {
-    email: email.value,
-    password: password.value,
-    keepLoggedIn: keepLoggedIn.value,
-  })
+const handleSubmit = async () => {
+  errorMsg.value = ''
+  loading.value = true
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value)
+    router.push('/')
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      errorMsg.value = error.message
+    } else {
+      errorMsg.value = 'Sign in failed.'
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleGoogleSignIn = async () => {
+  errorMsg.value = ''
+  loading.value = true
+  try {
+    const provider = new GoogleAuthProvider()
+    await signInWithPopup(auth, provider)
+    router.push('/')
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      errorMsg.value = error.message
+    } else {
+      errorMsg.value = 'Google sign in failed.'
+    }
+  } finally {
+    loading.value = false
+  }
 }
 </script>
+
+<style scoped>
+.loader {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>

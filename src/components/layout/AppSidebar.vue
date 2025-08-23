@@ -31,7 +31,7 @@
         <img
           v-if="isExpanded || isHovered || isMobileOpen"
           class="hidden dark:block"
-          src="/images/logo/logo-dark.svg"
+          src="/images/logo/logo.png"
           alt="Logo"
           width="150"
           height="40"
@@ -164,7 +164,7 @@
                           {{ subItem.name }}
                           <span class="flex items-center gap-1 ml-auto">
                             <span
-                              v-if="subItem.new"
+                              v-if="subItem"
                               :class="[
                                 'menu-dropdown-badge',
                                 {
@@ -211,17 +211,14 @@
   </aside>
 </template>
 
-<script setup>
-import { ref, computed } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 import {
   GridIcon,
   CalenderIcon,
   UserCircleIcon,
-  ChatIcon,
-  MailIcon,
-  DocsIcon,
   PieChartIcon,
   ChevronDownIcon,
   HorizontalDots,
@@ -240,7 +237,7 @@ const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar();
 
 const menuGroups = [
   {
-    title: "Menu",
+    title: "Manager Menu",
     items: [
       {
         icon: GridIcon,
@@ -250,6 +247,25 @@ const menuGroups = [
           { name: "My Employees", path: "/", pro: false },
           { name: "My Reports", path: "/", pro: false },
         ],
+      },
+            {
+        icon: GridIcon,
+        name: "KPIs",
+        subItems: [
+          { name: "Goals for Division", path: "/", pro: false },
+          { name: "Goals for Division", path: "/", pro: false },
+          { name: "Goals for Division", path: "/", pro: false },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Organization Menu",
+    items: [
+      {
+        icon: GridIcon,
+        name: "My Manager's Menu",
+       path: "/"
       },
             {
         icon: GridIcon,
@@ -299,6 +315,10 @@ const menuGroups = [
       },
     ],
   },
+
+
+
+
   {
     title: "Others",
     items: [
@@ -335,9 +355,9 @@ const menuGroups = [
   },
 ];
 
-const isActive = (path) => route.path === path;
+const isActive = (path: string) => route.path === path;
 
-const toggleSubmenu = (groupIndex, itemIndex) => {
+const toggleSubmenu = (groupIndex: number, itemIndex: number) => {
   const key = `${groupIndex}-${itemIndex}`;
   openSubmenu.value = openSubmenu.value === key ? null : key;
 };
@@ -351,7 +371,7 @@ const isAnySubmenuRouteActive = computed(() => {
   );
 });
 
-const isSubmenuOpen = (groupIndex, itemIndex) => {
+const isSubmenuOpen = (groupIndex: number, itemIndex: number) => {
   const key = `${groupIndex}-${itemIndex}`;
   return (
     openSubmenu.value === key ||
@@ -362,15 +382,19 @@ const isSubmenuOpen = (groupIndex, itemIndex) => {
   );
 };
 
-const startTransition = (el) => {
-  el.style.height = "auto";
-  const height = el.scrollHeight;
-  el.style.height = "0px";
-  el.offsetHeight; // force reflow
-  el.style.height = height + "px";
+const startTransition = (el: Element, done?: () => void) => {
+  const element = el as HTMLElement;
+  element.style.height = "auto";
+  const height = element.scrollHeight;
+  element.style.height = "0px";
+  void element.offsetHeight; // force reflow
+  element.style.height = height + "px";
+  if (done) done();
 };
 
-const endTransition = (el) => {
-  el.style.height = "";
+const endTransition = (el: Element, done?: () => void) => {
+  const element = el as HTMLElement;
+  element.style.height = "";
+  if (done) done();
 };
 </script>

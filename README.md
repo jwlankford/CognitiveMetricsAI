@@ -1,43 +1,89 @@
-# TailAdmin Vue - Free Vue.js Tailwind CSS Admin Dashboard Template
+# Cognitive Metrics AI
 
-TailAdmin Vue is a free, open-source admin dashboard template **built on Vue.js**, popular and progressive JavaScript
-framework, and **Tailwind CSS**. This **powerful combination** provides developers with an extensive library of
-essential components, elements, and pages to launch a comprehensive and data-centric back-end, dashboard, or admin panel
-solution for any Vue.js based web projects.
+A modern performance measurement and review application for managers. It streamlines the performance review process by providing a centralized platform for tracking employee progress, collecting data, and generating data-driven insights. The application aims to move beyond traditional, static performance reviews to foster a continuous culture of growth and improvement.
 
-![TailAdmin Vue.js Dashboard Preview](./banner.png)
+## Technology Stack
 
-With TailAdmin Vue, you can leverage **Vue.js 3** features such as declarative rendering, component-based architecture,
-Vue Router for routing, and Pinia for state management. It also utilizes the power of Tailwind CSS for rapid UI
-development with its low-level utility classes and responsive design capabilities.
+- **Frontend:** Vue.js (with Vue Router and Pinia)
+- **Backend:** Django (with Django REST Framework)
+- **Database:** PostgreSQL (recommended)
+- **Version Control & CI/CD:** Azure DevOps
 
-## Overview
+## Getting Started
 
-TailAdmin provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and control panels. It's built on:
+These instructions will get a copy of the project up and running on your local machine for development and testing purposes.
 
-- Vue 3 (Vite)
-- TypeScript
-- Tailwind CSS
+### Prerequisites
 
-### Quick Links
+You will need the following software installed:
 
-- [✨ Visit Website](https://tailadmin.com)
-- [📄 Documentation](https://tailadmin.com/docs)
-- [⬇️ Download](https://tailadmin.com/download)
-- [🖌️ Figma Design File (Community Edition)](https://www.figma.com/community/file/1463141366275764364)
-- [⚡ Get PRO Version](https://tailadmin.com/pricing)
+- Node.js (for the Vue.js frontend)
+- Python 3.10+ (for the Django backend)
+- Git
 
-### Demos
+## Installation
 
-- [Free Version](https://free-vue-demo.tailadmin.com/)
-- [Pro Version](https://vue-demo.tailadmin.com)
+### Clone the repository
 
-### Other Versions
+```bash
+git clone https://jwlankford@dev.azure.com/jwlankford/CognitiveMetricsAI/_git/CognitiveMetricsAI
+cd CognitiveMetricsAI
+```
 
-- [HTML Version](https://github.com/TailAdmin/tailadmin-free-tailwind-dashboard-template)
-- [Next.js Version](https://github.com/TailAdmin/free-nextjs-admin-dashboard)
-- [React Version](https://github.com/TailAdmin/free-react-tailwind-admin-dashboard)
+### Set up the Backend (Django)
 
+```bash
+# Create a virtual environment and activate it
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+# Install the backend dependencies
+pip install -r requirements.txt
+# Run database migrations
+python manage.py migrate
+```
+
+### Set up the Frontend (Vue.js)
+
+```bash
+# Navigate to the frontend directory
+cd frontend
+# Install the frontend dependencies
+npm install
+```
+
+npm run dev
+
+## Usage
+
+### Running the Backend
+
+Make sure your virtual environment is active, then run:
+
+```bash
+python manage.py runserver
+```
+
+### Running the Frontend
+
+Navigate to the frontend directory in a new terminal and run:
+
+```bash
+npm run dev
+```
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the `LICENSE.md` file for details.
 ## Installation
 
 ### Prerequisites

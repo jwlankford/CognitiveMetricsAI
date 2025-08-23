@@ -244,6 +244,25 @@ const menuGroups = [
     items: [
       {
         icon: GridIcon,
+        name: "My Manager's Menu",
+        subItems: [
+          { name: "My Goals", path: "/", pro: false },
+          { name: "My Employees", path: "/", pro: false },
+          { name: "My Reports", path: "/", pro: false },
+        ],
+      },
+            {
+        icon: GridIcon,
+        name: "KPIs",
+        subItems: [
+          { name: "Goals for Division", path: "/", pro: false },
+          { name: "Goals for Division", path: "/", pro: false },
+          { name: "Goals for Division", path: "/", pro: false },
+        ],
+      },
+
+            {
+        icon: GridIcon,
         name: "Dashboard",
         subItems: [{ name: "Ecommerce", path: "/", pro: false }],
       },

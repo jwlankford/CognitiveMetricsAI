@@ -119,17 +119,17 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'Signin',
-      component: () => import('../views/Auth/Signin.vue'),
+      component: () => import('../views/Auth/SignIn.vue'),
       meta: {
         title: 'Signin',
       },
     },
     {
       path: '/signup',
-      name: 'Signup',
+      name: 'SignUp',
       component: () => import('../views/Auth/SignUp.vue'),
       meta: {
-        title: 'Signup',
+        title: 'SignUp',
       },
     },
   ],
